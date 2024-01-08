@@ -3,3 +3,6 @@
 ```sh
 $ ./install.sh
 ```
+
+# WARNING
+- DO NOT contain any secret file.(e.g. `.aws`)
