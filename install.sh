@@ -6,6 +6,7 @@ for dotfile in "${DOTFILES_DIR}"/.??*; do
 
     # ファイル名のみを取得（フルパスから）
     filename=$(basename "$dotfile")
+    echo $filename
 
     # 特定のファイルを除外
     if [[ "$filename" == ".git" || "$filename" == ".github" || "$filename" == ".DS_Store" ]]; then
@@ -13,4 +14,5 @@ for dotfile in "${DOTFILES_DIR}"/.??*; do
     fi
 
     ln -fnsv "$dotfile" "$HOME"
+    echo $dotfile
 done

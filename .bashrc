@@ -1,8 +1,3 @@
-export PATH="/opt/homebrew/bin:$PATH"
-export GOPATH=$(go env GOPATH)
-export PATH=$PATH:$GOPATH/bin
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/Library/Apple/usr/bin:/opt/homebrew/bin:/Users/nakajimahidenari/go/bin:/Users/nakajimahidenari/.yarn/bin
-
 # function
 function mkcd(){ mkdir $1 && cd $1; }
 
@@ -41,4 +36,3 @@ alias di='docker images'
 alias dv='docker volume'
 alias dn='docker network'
 alias de='docker exec'
-export PATH="/opt/homebrew/opt/unzip/bin:$PATH"
