@@ -36,3 +36,5 @@ alias di='docker images'
 alias dv='docker volume'
 alias dn='docker network'
 alias de='docker exec'
+
+export LESSCHARSET=utf-8
