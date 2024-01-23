@@ -1,6 +1,7 @@
 # 設定ファイルを、全てホームディレクトリに向けてシンボリックリンクを貼ります。
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
+echo $DOTFILES_DIR
 
 for dotfile in "${DOTFILES_DIR}"/.??*; do
 
