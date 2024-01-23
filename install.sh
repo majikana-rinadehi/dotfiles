@@ -12,7 +12,16 @@ for dotfile in "${DOTFILES_DIR}"/.??*; do
     echo $filename
 
     # 特定のファイルを除外
-    if [[ "$filename" == ".git" || "$filename" == ".github" || "$filename" == ".DS_Store" ]]; then
+    ## 仕方なく[[]]の使用を諦める...
+    if "$filename" == ".git"; then
+        continue
+    fi
+
+    if "$filename" == ".github"; then
+        continue
+    fi
+    
+    if "$filename" == ".DS_Store" ]]; then
         continue
     fi
 
