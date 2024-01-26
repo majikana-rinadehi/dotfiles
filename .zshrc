@@ -14,6 +14,7 @@ alias findr='find . -type f | grep -E'
 
 ## git command
 alias g='git'
+alias gb='git branch'
 alias gl='git log --graph'
 alias gst='git status'
 alias gc='git add . && git commit'
