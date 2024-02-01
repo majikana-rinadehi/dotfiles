@@ -29,6 +29,7 @@ alias y='yarn'
 alias yd='yarn dev'
 alias yb='yarn build'
 alias ya='yarn add'
+alias ybd='yarn build && yarn dev'
 
 ## docker command
 alias d='docker'
