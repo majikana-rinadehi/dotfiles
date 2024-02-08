@@ -13,7 +13,7 @@ alias mkcd=mkcd
 alias findr='find . -type f | grep -E'
 alias m='make'
 alias t='time'
-alias tm=''time make'
+alias tm='time make'
 
 ## git command
 alias g='git'
