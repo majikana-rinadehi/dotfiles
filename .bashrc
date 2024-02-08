@@ -11,6 +11,9 @@ alias grep='grep -E --color=auto'
 alias setalias='vim ~/.zshrc && source ~/.zshrc && alias'
 alias mkcd=mkcd
 alias findr='find . -type f | grep -E'
+alias m='make'
+alias t='time'
+alias tm=''time make'
 
 ## git command
 alias g='git'
