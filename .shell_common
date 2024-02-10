@@ -17,6 +17,7 @@ alias findr='find . -type f | grep -E'
 alias m='make'
 alias t='time'
 alias tm='time make'
+alias rm='rm -iv'
 
 ## git command
 alias g='git'
