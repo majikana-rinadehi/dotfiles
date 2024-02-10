@@ -1,0 +1,56 @@
+# 各設定ファイルから共通的に読み込まれる
+
+# function
+function mkcd(){ mkdir $1 && cd $1; }
+
+# alias
+
+## linux
+alias a='alias'
+alias ls='ls --color=auto'
+alias ll='ls -l'
+alias la='ls -la'
+alias grep='grep -E --color=auto'
+alias setalias='vim ~/.zshrc && source ~/.zshrc && alias'
+alias mkcd=mkcd
+alias findr='find . -type f | grep -E'
+alias m='make'
+alias t='time'
+alias tm='time make'
+
+## git command
+alias g='git'
+alias gb='git branch'
+alias gl='git log --graph'
+alias gst='git status'
+alias gc='git add . && git commit'
+alias gsc='git switch -c'
+alias gsw='git switch'
+alias gpl='git pull'
+alias gps='git push'
+alias gdf="gl | grep -m 2 commit | awk '{print \$NF}' | xargs -t git diff"
+### only displays file name diff
+alias gdfn="gl | grep -m 2 commit | awk '{print \$NF}' | xargs -t git diff --name-only"
+
+## web dev
+alias y='yarn'
+alias ya='yarn add'
+alias yd='yarn dev'
+alias yb='yarn build'
+alias ybd='yarn build && yarn dev'
+
+## docker command
+alias d='docker'
+alias dc='docker compose'
+alias dcu='docker compose up'
+alias di='docker images'
+alias dv='docker volume'
+alias dn='docker network'
+alias de='docker exec'
+alias dp='docker ps'
+
+## aws
+alias asu='aws-sso-util'
+alias asul='aws-sso-util login'
+
+export LESSCHARSET=utf-8
