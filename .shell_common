@@ -21,6 +21,7 @@ alias rm='rm -iv'
 
 ## git command
 alias g='git'
+alias ga='git add'
 alias gb='git branch'
 alias gl='git log --graph'
 alias gst='git status'
