@@ -6,3 +6,4 @@ fi
 
 #　個別の設定
 alias dpl='docker pull'
+export PATH="/opt/homebrew/bin:$PATH"
