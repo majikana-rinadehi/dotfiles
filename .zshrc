@@ -5,5 +5,5 @@ if [ -f ~/.shell_common ]; then
 fi
 
 #　個別の設定
-alias dpl='docker pull'
+## zsh向けのhomebrew PATH設定
 export PATH="/opt/homebrew/bin:$PATH"
