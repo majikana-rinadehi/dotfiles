@@ -7,7 +7,7 @@ function mkcd(){ mkdir $1 && cd $1; }
 
 ## linux
 alias a='alias'
-alias ls='ls --color=auto'
+alias ls='ls --color=auto -G'
 alias ll='ls -l'
 alias la='ls -la'
 alias grep='grep -E --color=auto'
@@ -60,4 +60,15 @@ alias dp='docker ps'
 alias asu='aws-sso-util'
 alias asul='aws-sso-util login'
 
+# 環境変数
+## ターミナルフォーマット
 export LESSCHARSET=utf-8
+### 出力後に改行
+function add_line {
+  if [[ -z "${PS1_NEWLINE_LOGIN}" ]]; then
+    PS1_NEWLINE_LOGIN=true
+  else
+    printf '\n'
+  fi
+}
+PROMPT_COMMAND='add_line'
