@@ -44,9 +44,10 @@ alias gwt="git worktree"
 ## web dev
 alias y='yarn'
 alias ya='yarn add'
-alias yd='yarn dev'
 alias yb='yarn build'
 alias ybd='yarn build && yarn dev'
+alias yd='yarn dev'
+alias ydm='yarn dev:mock'
 
 ## docker command
 alias d='docker'
