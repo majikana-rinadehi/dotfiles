@@ -63,6 +63,14 @@ alias dp='docker ps'
 alias asu='aws-sso-util'
 alias asul='aws-sso-util login'
 
+## Rust
+alias ru='rustup'
+alias rc='rustc'
+alias cg='cargo'
+alias cgb='cargo build'
+alias cgr='cargo run'
+alias cgt='cargo test'
+
 # 環境変数
 ## ターミナルフォーマット
 export LESSCHARSET=utf-8
