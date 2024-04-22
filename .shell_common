@@ -6,6 +6,8 @@ function mkcd(){ mkdir $1 && cd $1; }
 # alias
 
 ## linux
+alias ..='cd ../'
+alias ...='cd ../../'
 alias a='alias'
 ### format table (e.g. ip r | ct)
 alias ct='column -t'
