@@ -70,6 +70,7 @@ alias ru='rustup'
 alias rc='rustc'
 alias cg='cargo'
 alias cgb='cargo build'
+alias cgc='cargo check'
 alias cgr='cargo run'
 alias cgt='cargo test'
 
