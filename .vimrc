@@ -1,3 +1,6 @@
+" 行番号設定
+set number
+
 " エンコーディング設定
 set encoding=utf-8
 set fileencodings=utf-8,iso-2022-jp,euc-jp,sjis
