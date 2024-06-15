@@ -11,5 +11,5 @@ set termencoding=utf-8
 " 日本語表示を可能にする
 set helplang=ja
 
-" 0 で改行を追加できるようにする
+" o で改行を追加できるようにする
 nnoremap O :<C-u>call append(expand('.'), '')<Cr>j
