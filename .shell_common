@@ -9,8 +9,7 @@ function mkcd(){ mkdir $1 && cd $1; }
 alias ..='cd ../'
 alias ...='cd ../../'
 alias a='alias'
-### format table (e.g. ip r | ct)
-alias ct='column -t'
+alias ct='column -t' ### format table (e.g. ip r | ct)
 alias ls='ls --color=auto -G'
 alias ll='ls -l'
 alias la='ls -la'
@@ -19,6 +18,7 @@ alias setalias='vim ~/.zshrc && source ~/.zshrc && alias'
 alias mkcd=mkcd
 alias findr='find . -type f | grep -E'
 alias m='make'
+alias h='history'
 alias t='time'
 alias tm='time make'
 alias rm='rm -iv'
