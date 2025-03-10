@@ -11,6 +11,17 @@ echo "HOME $HOME"
 ln -fnsv "$COMMON_FILE" "$HOME"
 echo "Dotfile set $dotfile"
 
+# 既存の.gitconfigを.gitconfig_local にバックアップし、dotfilesのものを適用します
+if [ -f "$HOME/.gitconfig" ]; then
+    echo "既存の .gitconfig をバックアップします..."
+    mv "$HOME/.gitconfig" "$HOME/.gitconfig_local"
+else
+    echo "既存の .gitconfig は見つかりませんでした。"
+    echo "空の.gitconfig_local を作成します..."
+    touch "$HOME/.gitconfig_local"
+fi
+
+
 for dotfile in "${DOTFILES_DIR}"/.??*; do
 
     # ファイル名のみを取得（フルパスから）
