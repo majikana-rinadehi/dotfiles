@@ -1,5 +1,6 @@
+# 既存の.gitconfigをバックアップしたうえで、その内容をオーバーライドする
 [include]
-    path = ~/.gitconfig
+    path = ~/.gitconfig_local
 
 # clearly makes git better
 
