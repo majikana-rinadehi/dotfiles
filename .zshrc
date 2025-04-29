@@ -32,6 +32,6 @@ export PATH="/opt/homebrew/bin:$PATH"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # 各種 source コマンドの実施
-source ~/.plugins.zsh/powerlevel10k/powerlevel10k.zsh-theme
-source ~/.plugins.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.plugins.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.plugins/powerlevel10k/powerlevel10k.zsh-theme
+source ~/.plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
