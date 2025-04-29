@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # 共通設定の読み込み
 if [ -f ~/.shell_common ]; then
     . ~/.shell_common
@@ -7,6 +14,9 @@ if [ -n "$PS1" ]; then
 fi
 
 #　個別の設定
+## Powerlevel10kを使用
+export ZSH_THEME="powerlevel10k/powerlevel10k"
+source ~/.powerlevel10k/powerlevel10k.zsh-theme
 ## ヒストリの設定
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
@@ -15,3 +25,6 @@ SAVEHIST=1000000
 export PROMPT="%F{magenta}%n%f:%F{yellow}%~%f %# "
 ## zsh向けのhomebrew PATH設定
 export PATH="/opt/homebrew/bin:$PATH"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
