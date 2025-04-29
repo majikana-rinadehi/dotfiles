@@ -10,14 +10,19 @@ if [ -f ~/.shell_common ]; then
     . ~/.shell_common
 fi
 
+
 #　個別の設定
+## プロンプト補完
+autoload -Uz compinit
+compinit
+# 補完候補に色付け
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 ## Powerlevel10kを使用
 export ZSH_THEME="powerlevel10k/powerlevel10k"
-source ~/.powerlevel10k/powerlevel10k.zsh-theme
 ## ヒストリの設定
 HISTFILE=~/.zsh_history
-HISTSIZE=1000000
-SAVEHIST=1000000
+HISTSIZE=10000
+SAVEHIST=10000
 ## ターミナルフォーマット
 export PROMPT="%F{magenta}%n%f:%F{yellow}%~%f %# "
 ## zsh向けのhomebrew PATH設定
@@ -25,3 +30,8 @@ export PATH="/opt/homebrew/bin:$PATH"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# 各種 source コマンドの実施
+source ~/.plugins.zsh/powerlevel10k/powerlevel10k.zsh-theme
+source ~/.plugins.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.plugins.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
