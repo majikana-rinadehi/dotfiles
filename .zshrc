@@ -35,3 +35,6 @@ export PATH="/opt/homebrew/bin:$PATH"
 source ~/.plugins/powerlevel10k/powerlevel10k.zsh-theme
 source ~/.plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Created by `pipx` on 2025-05-11 11:30:16
+export PATH="$PATH:/Users/nakajimahidenari/.local/bin"

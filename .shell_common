@@ -85,7 +85,7 @@ alias cgt='cargo test'
 export LESSCHARSET=utf-8
 ## 日本語文字化け防止
 export LANG=ja_JP.UTF-8
-### 出力後に改行
+## 出力後に改行
 function add_line {
   if [[ -z "${PS1_NEWLINE_LOGIN}" ]]; then
     PS1_NEWLINE_LOGIN=true
@@ -94,3 +94,6 @@ function add_line {
   fi
 }
 PROMPT_COMMAND='add_line'
+## tmuxの再接続が正しく実施されるように設定
+## see: https://qiita.com/ss_33_sss/items/8456152d453df0c6195f
+export TMUX_TMPDIR=/tmp
