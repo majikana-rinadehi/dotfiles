@@ -10,7 +10,11 @@ alias ..='cd ../'
 alias ...='cd ../../'
 alias a='alias'
 alias ct='column -t' ### format table (e.g. ip r | ct)
-alias ls='ls --color=auto -G'
+if [[ "$OSTYPE" == "darwin"* ]]; then        
+    alias ls='gls --color=auto' # macOSの場合              
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then   
+    alias ls='ls --color=auto -G' # GNU版の場合           
+fi                                           
 alias ll='ls -l'
 alias la='ls -la'
 alias lh='ls -lh'
