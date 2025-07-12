@@ -58,6 +58,12 @@ alias gwt="git worktree"
 ### use ghq and peco to easily move to the repository
 ### https://zenn.dev/devopslead/articles/2defd1ac20bbfe
 alias sd='peco-cd'
+### migrate one repository to ghq
+### example: ghgmig ~/apps/hogerepo/
+alias ghqmig="GHQ_MIGRATOR_ACTUALLY_RUN=1 ~/src/github.com/astj/ghq-migrator/ghq-migrator.bash"
+### migrate all repositories in the specified directory to ghq
+### example: ghgmig-batch ~/apps/git/
+alias ghgmig-batch="ls | xargs -I{} ~/src/github.com/astj/ghq-migrator/ghq-migrator.bash {}"
 
 ## web dev
 alias y='yarn'
