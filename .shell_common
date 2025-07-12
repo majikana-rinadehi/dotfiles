@@ -2,6 +2,9 @@
 
 # function
 function mkcd(){ mkdir $1 && cd $1; }
+function peco-cd () {
+  cd "$( ghq list --full-path | peco)"
+}
 
 # alias
 
@@ -52,6 +55,9 @@ alias gdf="gl | grep -m 2 commit | awk '{print \$NF}' | xargs -t git diff"
 ### only displays file name diff
 alias gdfn="gl | grep -m 2 commit | awk '{print \$NF}' | xargs -t git diff --name-only"
 alias gwt="git worktree"
+### use ghq and peco to easily move to the repository
+### https://zenn.dev/devopslead/articles/2defd1ac20bbfe
+alias sd='peco-cd'
 
 ## web dev
 alias y='yarn'
