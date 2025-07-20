@@ -82,21 +82,28 @@ autoload -Uz _zinit
 # Load powerlevel10k theme with zinit
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
-# Load zsh-syntax-highlighting with zinit
+# Load zsh-syntax-highlighting with zinit (immediate loading for visual feedback)
 zinit light zsh-users/zsh-syntax-highlighting
 
-# Load zsh-autosuggestions with zinit
+# Load zsh-autosuggestions with zinit (lazy loading with turbo mode)
+zinit ice wait"1" lucid
 zinit light zsh-users/zsh-autosuggestions
 
-# Load zsh-completions with zinit
+# Load zsh-completions with zinit (lazy loading with turbo mode)
+zinit ice wait"2" lucid
 zinit light zsh-users/zsh-completions
 
-# zoxide setup
-# Auto-install zoxide with brew if not installed
-if ! command -v zoxide &> /dev/null; then
+# zoxide setup (lazy loading with turbo mode)
+zinit ice wait"3" lucid as"command" from"gh-r" \
+  mv"zoxide*/zoxide -> zoxide" \
+  atclone"chmod +x zoxide && ./zoxide init zsh > init.zsh" \
+  atpull"%atclone" src"init.zsh" nocompile'!'
+zinit light ajeetdsouza/zoxide
+
+# Fallback: Auto-install zoxide with brew if zinit installation fails
+zinit ice wait"4" lucid if'[[ ! -x $(which zoxide) ]]'
+zinit snippet <(echo 'if ! command -v zoxide &> /dev/null; then
   echo "Installing zoxide with brew..."
   brew install zoxide
 fi
-
-# Initialize zoxide
-eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh)"')
