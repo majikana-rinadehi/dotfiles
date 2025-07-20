@@ -90,3 +90,13 @@ zinit light zsh-users/zsh-autosuggestions
 
 # Load zsh-completions with zinit
 zinit light zsh-users/zsh-completions
+
+# zoxide setup
+# Auto-install zoxide with brew if not installed
+if ! command -v zoxide &> /dev/null; then
+  echo "Installing zoxide with brew..."
+  brew install zoxide
+fi
+
+# Initialize zoxide
+eval "$(zoxide init zsh)"
