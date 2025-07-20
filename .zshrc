@@ -90,3 +90,12 @@ zinit light zsh-users/zsh-autosuggestions
 
 # Load zsh-completions with zinit
 zinit light zsh-users/zsh-completions
+
+# Load zoxide with zinit
+zinit ice as"command" from"gh-r" \
+  atclone"./zoxide init zsh > init.zsh" \
+  atpull"%atclone" src"init.zsh" nocompile'!'
+zinit light ajeetdsouza/zoxide
+
+# zoxide aliases
+alias cd='z'
