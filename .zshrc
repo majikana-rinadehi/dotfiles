@@ -30,7 +30,6 @@ export PATH="/opt/homebrew/bin:$PATH"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # 各種 source コマンドの実施
-source ~/.plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Created by `pipx` on 2025-05-11 11:30:16
 export PATH="$PATH:/Users/nakajimahidenari/.local/bin"
@@ -85,3 +84,6 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 # Load zsh-syntax-highlighting with zinit
 zinit light zsh-users/zsh-syntax-highlighting
+
+# Load zsh-autosuggestions with zinit
+zinit light zsh-users/zsh-autosuggestions
