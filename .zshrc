@@ -93,17 +93,13 @@ zinit light zsh-users/zsh-autosuggestions
 zinit ice wait"2" lucid
 zinit light zsh-users/zsh-completions
 
-# zoxide setup (lazy loading with turbo mode)
-zinit ice wait"3" lucid as"command" from"gh-r" \
-  mv"zoxide*/zoxide -> zoxide" \
-  atclone"chmod +x zoxide && ./zoxide init zsh > init.zsh" \
-  atpull"%atclone" src"init.zsh" nocompile'!'
-zinit light ajeetdsouza/zoxide
-
-# Fallback: Auto-install zoxide with brew if zinit installation fails
-zinit ice wait"4" lucid if'[[ ! -x $(which zoxide) ]]'
-zinit snippet <(echo 'if ! command -v zoxide &> /dev/null; then
-  echo "Installing zoxide with brew..."
-  brew install zoxide
-fi
-eval "$(zoxide init zsh)"')
+# zoxide setup (simple delayed initialization)
+# Initialize zoxide after 3 seconds for better startup time
+(
+  sleep 3
+  if ! command -v zoxide &> /dev/null; then
+    echo "Installing zoxide with brew..."
+    brew install zoxide
+  fi
+  eval "$(zoxide init zsh)"
+) &!
