@@ -6,7 +6,8 @@ Zinitは高速で柔軟なZshプラグインマネージャーです。
 
 ```bash
 zinit help                      # ヘルプを表示
-zinit list                      # インストール済みプラグイン一覧
+zinit plugins                   # インストール済みプラグイン一覧
+zinit snippets                  # インストール済みスニペット一覧
 zinit report <プラグイン名>     # プラグインの詳細情報
 zinit zstatus                   # 統計情報を表示
 ```
