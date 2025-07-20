@@ -10,7 +10,8 @@
       "Bash(ls:*)",
       "Bash(ls:*)",
       "Bash(zsh:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(zsh:*)"
     ],
     "deny": []
   }
