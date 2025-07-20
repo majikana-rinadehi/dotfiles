@@ -110,4 +110,4 @@ fi
 eval "$(zoxide init zsh --cmd z)"
 
 # Create custom alias for zoxide interactive mode to avoid zinit conflict
-alias zii='z -i'
+alias zii='zoxide query -i'
