@@ -87,3 +87,6 @@ zinit light zsh-users/zsh-syntax-highlighting
 
 # Load zsh-autosuggestions with zinit
 zinit light zsh-users/zsh-autosuggestions
+
+# Load zsh-completions with zinit
+zinit light zsh-users/zsh-completions
