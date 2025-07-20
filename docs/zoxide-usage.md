@@ -27,12 +27,14 @@ z doc              # ~/Documents に移動
 z down             # ~/Downloads に移動
 ```
 
-### ziコマンド（インタラクティブ選択）
+### ziiコマンド（インタラクティブ選択）
 
 ```bash
-zi                 # 訪問履歴から選択
-zi foo             # "foo"を含むディレクトリから選択
+zii                # 訪問履歴から選択
+zii foo            # "foo"を含むディレクトリから選択
 ```
+
+注意: `zi`コマンドはzinitと競合するため、このdotfilesでは`zii`として設定されています。
 
 ### よく使うコマンド
 
@@ -76,7 +78,7 @@ z my-awesome
 ```bash
 # project1, project2, project3 がある場合
 z project1         # 最も頻繁にアクセスするプロジェクトに移動
-zi project         # インタラクティブに選択
+zii project        # インタラクティブに選択
 ```
 
 ## データベースの管理
