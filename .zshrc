@@ -82,13 +82,15 @@ autoload -Uz _zinit
 # Load powerlevel10k theme with zinit
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
-# Load zsh-syntax-highlighting with zinit
+# Load zsh-syntax-highlighting with zinit (immediate loading for visual feedback)
 zinit light zsh-users/zsh-syntax-highlighting
 
-# Load zsh-autosuggestions with zinit
+# Load zsh-autosuggestions with zinit (lazy loading with turbo mode)
+zinit ice wait"1" lucid
 zinit light zsh-users/zsh-autosuggestions
 
-# Load zsh-completions with zinit
+# Load zsh-completions with zinit (lazy loading with turbo mode)
+zinit ice wait"2" lucid
 zinit light zsh-users/zsh-completions
 
 # zoxide setup
