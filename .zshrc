@@ -31,7 +31,6 @@ export PATH="/opt/homebrew/bin:$PATH"
 
 # 各種 source コマンドの実施
 source ~/.plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Created by `pipx` on 2025-05-11 11:30:16
 export PATH="$PATH:/Users/nakajimahidenari/.local/bin"
@@ -83,3 +82,6 @@ autoload -Uz _zinit
 
 # Load powerlevel10k theme with zinit
 zinit ice depth=1; zinit light romkatv/powerlevel10k
+
+# Load zsh-syntax-highlighting with zinit
+zinit light zsh-users/zsh-syntax-highlighting
