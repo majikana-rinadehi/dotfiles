@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh pr view:*)",
+      "Bash(gh pr reviews:*)",
+      "Bash(gh pr review:*)",
+      "Bash(find:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(ls:*)",
+      "Bash(ls:*)",
+      "Bash(zsh:*)",
+      "Bash(ls:*)"
+    ],
+    "deny": []
+  }
+}

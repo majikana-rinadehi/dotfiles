@@ -17,8 +17,6 @@ autoload -Uz compinit
 compinit
 # 補完候補に色付け
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-## Powerlevel10kを使用
-export ZSH_THEME="powerlevel10k/powerlevel10k"
 ## ヒストリの設定
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
@@ -32,7 +30,6 @@ export PATH="/opt/homebrew/bin:$PATH"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # 各種 source コマンドの実施
-source ~/.plugins/powerlevel10k/powerlevel10k.zsh-theme
 source ~/.plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
@@ -83,3 +80,6 @@ source "${ZINIT_HOME}/zinit.zsh"
 # Load completions
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
+
+# Load powerlevel10k theme with zinit
+zinit ice depth=1; zinit light romkatv/powerlevel10k
