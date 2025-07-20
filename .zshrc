@@ -109,5 +109,10 @@ fi
 # Initialize zoxide with custom alias to avoid conflict with zinit's zi
 eval "$(zoxide init zsh --cmd z)"
 
-# Create custom alias for zoxide interactive mode to avoid zinit conflict
-alias zii='zoxide query -i'
+# Create custom function for zoxide interactive mode to avoid zinit conflict
+function zii() {
+  local selected_dir="$(zoxide query -i)"
+  if [ -n "$selected_dir" ]; then
+    cd "$selected_dir"
+  fi
+}
