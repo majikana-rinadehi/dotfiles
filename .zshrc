@@ -30,7 +30,6 @@ export PATH="/opt/homebrew/bin:$PATH"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # 各種 source コマンドの実施
-source ~/.plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Created by `pipx` on 2025-05-11 11:30:16
 export PATH="$PATH:/Users/nakajimahidenari/.local/bin"
@@ -85,3 +84,12 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 # Load zsh-syntax-highlighting with zinit
 zinit light zsh-users/zsh-syntax-highlighting
+
+# Load zsh-autosuggestions with zinit
+# 動作確認方法: 
+# 1. ターミナルを再起動またはsource ~/.zshrcを実行
+# 2. 過去に実行したコマンドの最初の数文字を入力（例: ls, git, cd等）
+# 3. グレーの文字で自動補完候補が表示されることを確認
+# 4. 右矢印キー（→）またはEndキーで補完を受け入れ
+# 5. Ctrl+→で部分的な補完を確認
+zinit light zsh-users/zsh-autosuggestions
