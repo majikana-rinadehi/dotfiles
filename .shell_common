@@ -31,6 +31,8 @@ alias t='time'
 alias tx='tmux'
 alias tm='time make'
 alias rm='rm -iv'
+# zoxide aliases
+alias cd='z'
 
 ## git command
 alias g='git'

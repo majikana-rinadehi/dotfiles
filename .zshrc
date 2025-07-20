@@ -91,11 +91,12 @@ zinit light zsh-users/zsh-autosuggestions
 # Load zsh-completions with zinit
 zinit light zsh-users/zsh-completions
 
-# Load zoxide with zinit
-zinit ice as"command" from"gh-r" \
-  atclone"./zoxide init zsh > init.zsh" \
-  atpull"%atclone" src"init.zsh" nocompile'!'
-zinit light ajeetdsouza/zoxide
+# zoxide setup
+# Auto-install zoxide with brew if not installed
+if ! command -v zoxide &> /dev/null; then
+  echo "Installing zoxide with brew..."
+  brew install zoxide
+fi
 
-# zoxide aliases
-alias cd='z'
+# Initialize zoxide
+eval "$(zoxide init zsh)"
