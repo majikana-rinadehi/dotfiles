@@ -93,13 +93,12 @@ zinit light zsh-users/zsh-autosuggestions
 zinit ice wait"2" lucid
 zinit light zsh-users/zsh-completions
 
-# zoxide setup (simple delayed initialization)
-# Initialize zoxide after 3 seconds for better startup time
-(
-  sleep 3
-  if ! command -v zoxide &> /dev/null; then
-    echo "Installing zoxide with brew..."
-    brew install zoxide
-  fi
-  eval "$(zoxide init zsh)"
-) &!
+# zoxide setup
+# Auto-install zoxide with brew if not installed
+if ! command -v zoxide &> /dev/null; then
+  echo "Installing zoxide with brew..."
+  brew install zoxide
+fi
+
+# Initialize zoxide
+eval "$(zoxide init zsh)"
