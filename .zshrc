@@ -100,5 +100,14 @@ if ! command -v zoxide &> /dev/null; then
   brew install zoxide
 fi
 
-# Initialize zoxide
-eval "$(zoxide init zsh)"
+# Auto-install fzf with brew if not installed (required for zoxide interactive mode)
+if ! command -v fzf &> /dev/null; then
+  echo "Installing fzf with brew (required for zoxide interactive mode)..."
+  brew install fzf
+fi
+
+# Initialize zoxide with custom alias to avoid conflict with zinit's zi
+eval "$(zoxide init zsh --cmd z)"
+
+# Create custom alias for zoxide interactive mode to avoid zinit conflict
+alias zii='z -i'
