@@ -177,3 +177,28 @@ for dotfile in "${DOTFILES_DIR}"/.??*; do
     esac
 
 done
+
+# scriptsディレクトリ内のシェルスクリプトを$HOME/binにシンボリックリンク作成
+echo "Creating symlinks for scripts in $HOME/bin..."
+
+# $HOME/binディレクトリが存在しない場合は作成
+mkdir -p "$HOME/bin"
+
+# scriptsディレクトリ内の.shファイルを処理
+if [ -d "${DOTFILES_DIR}/scripts" ]; then
+    for script in "${DOTFILES_DIR}/scripts"/*.sh; do
+        if [ -f "$script" ]; then
+            script_name=$(basename "$script" .sh)
+            target_path="$HOME/bin/$script_name"
+            
+            # 既存のシンボリックリンクがある場合は削除
+            if [ -L "$target_path" ]; then
+                rm "$target_path"
+            fi
+            
+            # シンボリックリンクを作成
+            ln -s "$script" "$target_path"
+            echo "Created symlink: $target_path -> $script"
+        fi
+    done
+fi
