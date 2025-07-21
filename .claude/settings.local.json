@@ -11,7 +11,8 @@
       "Bash(ls:*)",
       "Bash(zsh:*)",
       "Bash(ls:*)",
-      "Bash(zsh:*)"
+      "Bash(zsh:*)",
+      "Bash(tmux source-file:*)"
     ],
     "deny": []
   }
