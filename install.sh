@@ -8,18 +8,134 @@ echo "DOTFILES_DIR $DOTFILES_DIR"
 echo "COMMON_FILE $COMMON_FILE"
 echo "HOME $HOME"
 
+# プラットフォーム判定
+detect_platform() {
+    case "$(uname -s)" in
+        Darwin*)
+            echo "macOS"
+            ;;
+        Linux*)
+            if [ -f /etc/os-release ]; then
+                . /etc/os-release
+                if [[ "$ID" == "ubuntu" ]] || [[ "$ID_LIKE" == *"ubuntu"* ]]; then
+                    echo "ubuntu"
+                else
+                    echo "linux"
+                fi
+            else
+                echo "linux"
+            fi
+            ;;
+        *)
+            echo "unsupported"
+            ;;
+    esac
+}
+
+PLATFORM=$(detect_platform)
+echo "Detected platform: $PLATFORM"
+
+# プラットフォーム固有の初期化処理
+platform_init() {
+    case "$PLATFORM" in
+        macOS)
+            echo "macOS環境の初期化を実行..."
+            # Homebrewが未インストールの場合の処理
+            if ! command -v brew &> /dev/null; then
+                echo "Homebrewがインストールされていません。"
+                echo "https://brew.sh を参照してインストールしてください。"
+                exit 1
+            fi
+            ;;
+        ubuntu)
+            echo "Ubuntu環境の初期化を実行..."
+            # 必要なパッケージの確認
+            if ! command -v git &> /dev/null; then
+                echo "gitがインストールされていません。"
+                echo "sudo apt update && sudo apt install git を実行してください。"
+                exit 1
+            fi
+            ;;
+        *)
+            echo "サポートされていないプラットフォームです: $PLATFORM"
+            exit 1
+            ;;
+    esac
+}
+
+# プラットフォーム初期化を実行
+platform_init
+
 ln -fnsv "$COMMON_FILE" "$HOME"
 echo "Dotfile set $dotfile"
 
-# # 既存の.gitconfigを.gitconfig_local にバックアップし、dotfilesのものを適用します
-# if [ -f "$HOME/.gitconfig" ]; then
-#     echo "既存の .gitconfig をバックアップします..."
-#     mv "$HOME/.gitconfig" "$HOME/.gitconfig_local"
-# else
-#     echo "既存の .gitconfig は見つかりませんでした。"
-#     echo "空の.gitconfig_local を作成します..."
-#     touch "$HOME/.gitconfig_local"
-# fi
+# .gitconfig の処理
+handle_gitconfig() {
+    local dotfiles_gitconfig="${DOTFILES_DIR}/.gitconfig"
+    local home_gitconfig="$HOME/.gitconfig"
+    local backup_gitconfig="$HOME/.gitconfig.backup"
+    
+    # dotfilesに.gitconfigが存在しない場合はスキップ
+    if [ ! -f "$dotfiles_gitconfig" ]; then
+        echo ".gitconfig がdotfilesに存在しないため、スキップします。"
+        return
+    fi
+    
+    # 既存の.gitconfigがある場合
+    if [ -f "$home_gitconfig" ]; then
+        echo "既存の .gitconfig を検出しました。"
+        
+        # 既存の設定から user.name と user.email を抽出
+        local user_name=$(git config --file "$home_gitconfig" user.name || echo "")
+        local user_email=$(git config --file "$home_gitconfig" user.email || echo "")
+        
+        # バックアップを作成
+        cp "$home_gitconfig" "$backup_gitconfig"
+        echo "既存の .gitconfig を $backup_gitconfig にバックアップしました。"
+        
+        # dotfilesの.gitconfigをコピー
+        cp "$dotfiles_gitconfig" "$home_gitconfig"
+        echo "dotfilesの .gitconfig を適用しました。"
+        
+        # ユーザー固有の設定を復元
+        if [ -n "$user_name" ]; then
+            git config --global user.name "$user_name"
+            echo "user.name を復元しました: $user_name"
+        fi
+        
+        if [ -n "$user_email" ]; then
+            git config --global user.email "$user_email"
+            echo "user.email を復元しました: $user_email"
+        fi
+        
+        # その他のローカル設定をincludeで読み込む設定を追加
+        if ! grep -q "path = ~/.gitconfig.local" "$home_gitconfig"; then
+            echo -e "\n[include]\n    path = ~/.gitconfig.local" >> "$home_gitconfig"
+            echo ".gitconfig.local のinclude設定を追加しました。"
+        fi
+        
+        # バックアップから.gitconfig.localを作成（ユーザー設定以外）
+        if [ -f "$backup_gitconfig" ]; then
+            grep -v -E "^\[user\]|name =|email =" "$backup_gitconfig" > "$HOME/.gitconfig.local" 2>/dev/null || true
+            echo "既存のカスタム設定を .gitconfig.local に保存しました。"
+        fi
+    else
+        # 新規インストールの場合
+        echo "既存の .gitconfig が見つかりませんでした。"
+        cp "$dotfiles_gitconfig" "$home_gitconfig"
+        echo "dotfilesの .gitconfig を新規作成しました。"
+        
+        # ユーザーに設定を促す
+        echo ""
+        echo "Git のユーザー情報を設定してください:"
+        echo "  git config --global user.name \"Your Name\""
+        echo "  git config --global user.email \"your.email@example.com\""
+        echo ""
+    fi
+}
+
+# .gitconfig の処理を実行
+handle_gitconfig
 
 
 for dotfile in "${DOTFILES_DIR}"/.??*; do
@@ -31,7 +147,7 @@ for dotfile in "${DOTFILES_DIR}"/.??*; do
     # 特定のファイルを除外
     ## 仕方なく[[]]の使用を諦める...
     case "$filename" in
-        .git | .github | .DS_Store | .shell_common)
+        .git | .github | .DS_Store | .shell_common | .gitconfig)
             continue
             ;;
         *)
