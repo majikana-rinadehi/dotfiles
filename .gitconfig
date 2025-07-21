@@ -1,0 +1,48 @@
+# Core settings
+[core]
+    editor = vim
+    autocrlf = false
+    ignorecase = false
+    quotepath = false
+    precomposeunicode = true
+
+# Color settings
+[color]
+    ui = auto
+    diff = auto
+    status = auto
+    branch = auto
+
+# Alias settings
+[alias]
+    st = status
+    co = checkout
+    br = branch
+    ci = commit
+    df = diff
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    lga = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    unstage = reset HEAD --
+    last = log -1 HEAD
+    amend = commit --amend --reuse-message=HEAD
+
+# Push settings
+[push]
+    default = simple
+
+# Pull settings
+[pull]
+    rebase = false
+
+# Merge settings
+[merge]
+    ff = false
+
+# Diff settings
+[diff]
+    algorithm = histogram
+    indentHeuristic = true
+
+# Include local settings
+[include]
+    path = ~/.gitconfig.local
