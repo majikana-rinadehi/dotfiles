@@ -202,3 +202,25 @@ if [ -d "${DOTFILES_DIR}/scripts" ]; then
         fi
     done
 fi
+
+# インストール完了後にシェル設定を再読み込み
+echo ""
+echo "インストールが完了しました。"
+echo "現在のシェルセッションに設定を反映しています..."
+
+# 現在のシェルがzshの場合、.zshrcを再読み込み
+if [ -n "$ZSH_VERSION" ]; then
+    if [ -f "$HOME/.zshrc" ]; then
+        echo "zsh設定を再読み込みしています..."
+        source "$HOME/.zshrc" 2>/dev/null && echo "✓ zsh設定の再読み込みが完了しました。" || echo "! zsh設定の再読み込みでエラーが発生しましたが、新しいターミナルでは正常に動作します。"
+    fi
+elif [ -n "$BASH_VERSION" ]; then
+    if [ -f "$HOME/.bashrc" ]; then
+        echo "bash設定を再読み込みしています..."
+        source "$HOME/.bashrc" 2>/dev/null && echo "✓ bash設定の再読み込みが完了しました。" || echo "! bash設定の再読み込みでエラーが発生しましたが、新しいターミナルでは正常に動作します。"
+    fi
+fi
+
+echo ""
+echo "🎉 dotfilesのセットアップが完了しました！"
+echo "新しい機能やコマンドが利用可能になりました。"
