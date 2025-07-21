@@ -178,6 +178,40 @@ for dotfile in "${DOTFILES_DIR}"/.??*; do
 
 done
 
+# worktree環境のセットアップ
+setup_worktree_environment() {
+    echo "Worktree環境のセットアップを実行しています..."
+    
+    # worktree専用ディレクトリの作成
+    local worktree_base_dir="$HOME/worktrees"
+    if [ ! -d "$worktree_base_dir" ]; then
+        mkdir -p "$worktree_base_dir"
+        echo "Worktreeベースディレクトリを作成しました: $worktree_base_dir"
+    else
+        echo "Worktreeベースディレクトリは既に存在します: $worktree_base_dir"
+    fi
+    
+    # worktree管理用のエイリアスを設定ファイルに追加
+    local shell_common="$HOME/.shell_common"
+    if [ -f "$shell_common" ]; then
+        # 既存のworktreeエイリアスをチェック
+        if ! grep -q "alias wt=" "$shell_common"; then
+            echo "" >> "$shell_common"
+            echo "# Worktree管理エイリアス" >> "$shell_common"
+            echo "alias wt='worktree-manager'" >> "$shell_common"
+            echo "alias wtc='worktree-manager create'" >> "$shell_common"
+            echo "alias wtl='worktree-manager list'" >> "$shell_common"
+            echo "alias wtd='worktree-manager delete'" >> "$shell_common"
+            echo "alias wtm='worktree-manager move'" >> "$shell_common"
+            echo "Worktreeエイリアスを追加しました"
+        else
+            echo "Worktreeエイリアスは既に設定済みです"
+        fi
+    fi
+    
+    echo "Worktree環境のセットアップが完了しました"
+}
+
 # scriptsディレクトリ内のシェルスクリプトを$HOME/binにシンボリックリンク作成
 echo "Creating symlinks for scripts in $HOME/bin..."
 
@@ -202,3 +236,6 @@ if [ -d "${DOTFILES_DIR}/scripts" ]; then
         fi
     done
 fi
+
+# worktree環境のセットアップを実行
+setup_worktree_environment
