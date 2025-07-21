@@ -30,9 +30,22 @@ gh issue create --title "タスクのタイトル" --body "タスクの詳細説
 
 ## 3. ブランチの作成
 
-ISSUEを作成後、最新のmainブランチから新規ブランチを作成します。
+ISSUEを作成後、**必ず**最新のmainブランチから新規ブランチを作成します。
+
+### ブランチ作成の手順
+
+1. 現在のブランチから変更を保存またはコミット
+2. mainブランチに移動し、最新版を取得
+3. issue番号を含む新規ブランチを作成
 
 ```bash
+# 現在のブランチの状態を確認
+git status
+
+# 必要に応じて現在の変更をコミットまたはスタッシュ
+git add .
+git commit -m "作業中の変更を保存" # または git stash
+
 # 最新のmainブランチを取得
 git checkout main
 git pull origin main
@@ -40,6 +53,12 @@ git pull origin main
 # 新規ブランチを作成
 git checkout -b feature/issue-番号-概要
 ```
+
+### 重要な注意事項
+
+- **必ずmainブランチから新規ブランチを作成する**
+- 他のfeatureブランチから直接作業を開始しない
+- ブランチ名にはissue番号を含める（例: `feature/issue-42-worktree-management`）
 
 ## 4. 実装とドキュメント化
 
