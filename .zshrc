@@ -144,3 +144,42 @@ function zii() {
     cd "$selected_dir"
   fi
 }
+
+# Git worktree aliases
+# worktree作成用エイリアス
+alias gwt-new='git worktree add'
+alias gwt-create='git worktree add'
+
+# worktree一覧表示用エイリアス
+alias gwt-list='git worktree list'
+alias gwt-ls='git worktree list'
+
+# worktree削除用エイリアス
+alias gwt-remove='git worktree remove'
+alias gwt-rm='git worktree remove'
+
+# worktree間の移動用エイリアス（ディレクトリ変更）
+function gwt-cd() {
+  if [ $# -eq 0 ]; then
+    echo "Usage: gwt-cd <worktree-name-or-path>"
+    git worktree list
+    return 1
+  fi
+  
+  local target_path
+  # 引数がパスかworktree名かを判定
+  if [ -d "$1" ]; then
+    target_path="$1"
+  else
+    # worktree名から完全パスを取得
+    target_path=$(git worktree list | grep -E "/$1\s" | awk '{print $1}' | head -n 1)
+    if [ -z "$target_path" ]; then
+      echo "Error: Worktree '$1' not found"
+      echo "Available worktrees:"
+      git worktree list
+      return 1
+    fi
+  fi
+  
+  cd "$target_path"
+}
