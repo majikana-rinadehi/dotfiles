@@ -55,6 +55,15 @@ platform_init() {
                 echo "sudo apt update && sudo apt install git を実行してください。"
                 exit 1
             fi
+            
+            # zinitのインストール
+            if [ ! -d "$HOME/.local/share/zinit/zinit.git" ]; then
+                echo "zinitをインストールしています..."
+                bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
+                echo "zinitのインストールが完了しました。"
+            else
+                echo "zinitは既にインストールされています。"
+            fi
             ;;
         *)
             echo "サポートされていないプラットフォームです: $PLATFORM"
@@ -114,9 +123,10 @@ handle_gitconfig() {
             echo ".gitconfig.local のinclude設定を追加しました。"
         fi
         
-        # バックアップから.gitconfig.localを作成（ユーザー設定以外）
+        # バックアップから.gitconfig.localを作成（ユーザー設定とinclude設定以外）
         if [ -f "$backup_gitconfig" ]; then
-            grep -v -E "^\[user\]|name =|email =" "$backup_gitconfig" > "$HOME/.gitconfig.local" 2>/dev/null || true
+            # userセクション、include設定、および.gitconfig.localへの参照を除外
+            grep -v -E "^\[user\]|^\[include\]|name =|email =|path = ~/\.gitconfig\.local" "$backup_gitconfig" > "$HOME/.gitconfig.local" 2>/dev/null || true
             echo "既存のカスタム設定を .gitconfig.local に保存しました。"
         fi
     else

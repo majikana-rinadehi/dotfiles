@@ -23,8 +23,10 @@ HISTSIZE=10000
 SAVEHIST=10000
 ## ターミナルフォーマット
 export PROMPT="%F{magenta}%n%f:%F{yellow}%~%f %# "
-## zsh向けのhomebrew PATH設定
-export PATH="/opt/homebrew/bin:$PATH"
+## zsh向けのhomebrew PATH設定 (macOSのみ)
+if [[ "$(uname -s)" == "Darwin" ]]; then
+    export PATH="/opt/homebrew/bin:$PATH"
+fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -94,20 +96,39 @@ zinit ice wait"2" lucid
 zinit light zsh-users/zsh-completions
 
 # zoxide setup
-# Auto-install zoxide with brew if not installed
-if ! command -v zoxide &> /dev/null; then
-  echo "Installing zoxide with brew..."
-  brew install zoxide
-fi
-
-# Auto-install fzf with brew if not installed (required for zoxide interactive mode)
-if ! command -v fzf &> /dev/null; then
-  echo "Installing fzf with brew (required for zoxide interactive mode)..."
-  brew install fzf
+# プラットフォーム判定
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  # macOS: brew を使用
+  if ! command -v zoxide &> /dev/null; then
+    echo "Installing zoxide with brew..."
+    brew install zoxide
+  fi
+  
+  if ! command -v fzf &> /dev/null; then
+    echo "Installing fzf with brew (required for zoxide interactive mode)..."
+    brew install fzf
+  fi
+elif [[ "$(uname -s)" == "Linux" ]]; then
+  # Linux/Ubuntu: apt または手動インストール
+  if ! command -v zoxide &> /dev/null; then
+    echo "zoxide is not installed. Please install it manually:"
+    echo "  curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash"
+  fi
+  
+  if ! command -v fzf &> /dev/null; then
+    if command -v apt &> /dev/null; then
+      echo "Installing fzf with apt (required for zoxide interactive mode)..."
+      echo "Please run: sudo apt update && sudo apt install fzf"
+    else
+      echo "fzf is not installed. Please install it manually."
+    fi
+  fi
 fi
 
 # Initialize zoxide with custom alias to avoid conflict with zinit's zi
-eval "$(zoxide init zsh --cmd z)"
+if command -v zoxide &> /dev/null; then
+    eval "$(zoxide init zsh --cmd z)"
+fi
 
 # Create custom function for zoxide interactive mode to avoid zinit conflict
 function zii() {
