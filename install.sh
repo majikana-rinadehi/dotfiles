@@ -46,6 +46,15 @@ platform_init() {
                 echo "https://brew.sh を参照してインストールしてください。"
                 exit 1
             fi
+            
+            # zinitのインストール（Homebrewを使用）
+            if ! command -v zinit &> /dev/null && [ ! -d "$HOME/.local/share/zinit/zinit.git" ]; then
+                echo "zinitをHomebrewでインストールしています..."
+                brew install zinit
+                echo "zinitのインストールが完了しました。"
+            else
+                echo "zinitは既にインストールされています。"
+            fi
             ;;
         ubuntu)
             echo "Ubuntu環境の初期化を実行..."

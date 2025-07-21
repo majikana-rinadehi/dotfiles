@@ -109,16 +109,23 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
     brew install fzf
   fi
 elif [[ "$(uname -s)" == "Linux" ]]; then
-  # Linux/Ubuntu: apt または手動インストール
+  # Linux/Ubuntu: apt を優先使用
   if ! command -v zoxide &> /dev/null; then
-    echo "zoxide is not installed. Please install it manually:"
-    echo "  curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash"
+    if command -v apt &> /dev/null; then
+      echo "zoxide is not installed. Please install it:"
+      echo "  sudo apt update && sudo apt install zoxide"
+      echo ""
+      echo "Note: If zoxide is not available in apt (Ubuntu < 22.04), install it with:"
+      echo "  curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash"
+    else
+      echo "zoxide is not installed. Please install it manually."
+    fi
   fi
   
   if ! command -v fzf &> /dev/null; then
     if command -v apt &> /dev/null; then
-      echo "Installing fzf with apt (required for zoxide interactive mode)..."
-      echo "Please run: sudo apt update && sudo apt install fzf"
+      echo "fzf is not installed. Please install it:"
+      echo "  sudo apt update && sudo apt install fzf"
     else
       echo "fzf is not installed. Please install it manually."
     fi
