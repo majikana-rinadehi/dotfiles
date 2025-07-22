@@ -1,6 +1,6 @@
 # Core settings
 [core]
-    editor = vim
+    editor = vi
     autocrlf = false
     ignorecase = false
     quotepath = false
