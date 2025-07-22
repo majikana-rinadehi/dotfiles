@@ -32,7 +32,7 @@
 
 # Pull settings
 [pull]
-    rebase = false
+    rebase = true
 
 # Merge settings
 [merge]
