@@ -68,7 +68,7 @@ platform_init() {
             # zinitのインストール
             if [ ! -d "$HOME/.local/share/zinit/zinit.git" ]; then
                 echo "zinitをインストールしています..."
-                bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
+                echo "y" | bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
                 echo "zinitのインストールが完了しました。"
             else
                 echo "zinitは既にインストールされています。"
