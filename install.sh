@@ -56,8 +56,8 @@ platform_init() {
                 echo "zinitは既にインストールされています。"
             fi
             ;;
-        ubuntu)
-            echo "Ubuntu環境の初期化を実行..."
+        ubuntu|linux)
+            echo "Linux環境の初期化を実行..."
             # 必要なパッケージの確認
             if ! command -v git &> /dev/null; then
                 echo "gitがインストールされていません。"
