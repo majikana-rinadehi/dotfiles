@@ -9,6 +9,11 @@ function peco-cd () {
 # git worktree管理機能 - スクリプト版を使用
 # シェル関数版は削除し、スクリプト版に統一
 
+# シェル関数版のworktree-managerを無効化（あれば）
+if typeset -f worktree-manager >/dev/null 2>&1; then
+    unset -f worktree-manager
+fi
+
 # alias
 ## linux commands
 alias ..='cd ../'
@@ -57,7 +62,13 @@ alias gdf="gl | grep -m 2 commit | awk '{print \$NF}' | xargs -t git diff"
 ### only displays file name diff
 alias gdfn="gl | grep -m 2 commit | awk '{print \$NF}' | xargs -t git diff --name-only"
 alias gwt="git worktree"
-alias wt="$HOME/bin/worktree-manager"
+# 既存のwtエイリアスを削除
+unalias wt 2>/dev/null || true
+
+# wtコマンドを関数として定義してスクリプト版を強制実行
+wt() {
+    command "$HOME/bin/worktree-manager" "$@"
+}
 ### use ghq and peco to easily move to the repository
 ### https://zenn.dev/devopslead/articles/2defd1ac20bbfe
 alias sd='peco-cd'
