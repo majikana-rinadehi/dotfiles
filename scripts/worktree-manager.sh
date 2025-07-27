@@ -31,19 +31,23 @@ ${SCRIPT_NAME} - Git Worktree管理ツール
     ${SCRIPT_NAME} <command> [options]
 
 コマンド:
-    create <branch> [path]    新しいworktreeを作成
-    list                      worktreeの一覧を表示
-    delete <path>             指定されたworktreeを削除
-    move <name|path>          指定されたworktree名またはパスに移動
-    help                      このヘルプを表示
+    create|c <branch> [path]  新しいworktreeを作成
+    list|l                    worktreeの一覧を表示
+    delete|d|remove|rm [path] 指定されたworktreeを削除（引数なしでpeco選択）
+    move|m|cd <name|path>     指定されたworktree名またはパスに移動
+    select|s                  pecoでworktreeを選択して移動
+    prune|p                   不要なworktreeエントリを削除
+    help|h                    このヘルプを表示
 
 例:
     ${SCRIPT_NAME} create feature/new-feature
     ${SCRIPT_NAME} create hotfix/bug-fix ../hotfix-repo
     ${SCRIPT_NAME} list
     ${SCRIPT_NAME} delete ../feature-repo
+    ${SCRIPT_NAME} delete                 # pecoで選択
     ${SCRIPT_NAME} move feature-branch
-    ${SCRIPT_NAME} move ../feature-repo
+    ${SCRIPT_NAME} select                 # pecoで選択して移動
+    ${SCRIPT_NAME} prune
 
 オプション:
     -h, --help               このヘルプを表示
@@ -52,9 +56,11 @@ ${SCRIPT_NAME} - Git Worktree管理ツール
     create: 新しいブランチとworktreeを作成します。パスを指定しない場合は
             '../<branch-name>'を使用します。
     list:   現在のworktree一覧を表示します。
-    delete: 指定されたパスのworktreeを削除します。
+    delete: 指定されたパスのworktreeを削除します。パス未指定時はpecoで選択。
     move:   指定されたworktree名またはパスのディレクトリに移動します。
             ブランチ名で指定した場合、自動的にworktreeのパスを解決します。
+    select: pecoを使ってworktreeを選択し、そのディレクトリに移動します。
+    prune:  削除されたディレクトリに対応するworktreeエントリを削除します。
 EOF
 }
 
@@ -112,9 +118,34 @@ list_worktrees() {
     fi
 }
 
+# Function to check if peco is available
+check_peco() {
+    if ! command -v peco >/dev/null 2>&1; then
+        print_status "$RED" "エラー: pecoがインストールされていません"
+        print_status "$YELLOW" "pecoをインストールしてください: brew install peco"
+        return 1
+    fi
+    return 0
+}
+
 # Function to delete a worktree
 delete_worktree() {
-    local path="$1"
+    local path="${1:-}"
+    
+    # If no path provided, use peco to select
+    if [[ -z "$path" ]]; then
+        check_peco || return 1
+        
+        local selected_worktree
+        selected_worktree=$(git worktree list | grep -v "(bare)" | peco)
+        
+        if [[ -z "$selected_worktree" ]]; then
+            print_status "$BLUE" "選択がキャンセルされました"
+            return 0
+        fi
+        
+        path=$(echo "$selected_worktree" | awk '{print $1}')
+    fi
     
     if [[ -z "$path" ]]; then
         print_status "$RED" "エラー: 削除するworktreeのパスが指定されていません"
@@ -244,6 +275,34 @@ move_to_worktree() {
     print_status "$BLUE" "cd $path"
 }
 
+# Function to select and move to a worktree using peco
+select_worktree() {
+    check_peco || return 1
+    
+    local selected_path
+    selected_path=$(git worktree list | grep -v "(bare)" | awk '{print $1}' | peco)
+    
+    if [[ -n "$selected_path" ]]; then
+        print_status "$GREEN" "worktreeに移動中: $selected_path"
+        print_status "$YELLOW" "次のコマンドを実行してください:"
+        print_status "$BLUE" "cd $selected_path"
+    else
+        print_status "$BLUE" "選択がキャンセルされました"
+    fi
+}
+
+# Function to prune worktrees
+prune_worktrees() {
+    print_status "$BLUE" "不要なworktreeエントリを削除中..."
+    
+    if git worktree prune -v; then
+        print_status "$GREEN" "pruneが正常に完了しました"
+    else
+        print_status "$RED" "エラー: pruneに失敗しました"
+        return 1
+    fi
+}
+
 # Main function
 main() {
     # Check if no arguments provided
@@ -272,12 +331,7 @@ main() {
             ;;
         "delete"|"d"|"remove"|"rm")
             check_git_repo || exit 1
-            if [[ $# -eq 0 ]]; then
-                print_status "$RED" "エラー: 削除するworktreeのパスが必要です"
-                show_help
-                exit 1
-            fi
-            delete_worktree "$1"
+            delete_worktree "${1:-}"
             ;;
         "move"|"m"|"cd")
             if [[ $# -eq 0 ]]; then
@@ -286,6 +340,14 @@ main() {
                 exit 1
             fi
             move_to_worktree "$1"
+            ;;
+        "select"|"s")
+            check_git_repo || exit 1
+            select_worktree
+            ;;
+        "prune"|"p")
+            check_git_repo || exit 1
+            prune_worktrees
             ;;
         "help"|"-h"|"--help")
             show_help
