@@ -105,13 +105,6 @@ handle_gitconfig() {
         rm -f "$gitconfig_local"
     fi
     
-    # 既存の.gitconfigがある場合の処理
-    if [ -f "$home_gitconfig" ] || [ -L "$home_gitconfig" ]; then
-        echo "既存の .gitconfig を検出しました。"
-        
-        # 既存の.gitconfigを削除
-        rm -f "$home_gitconfig"
-    fi
     
     # dotfilesの.gitconfigへのシンボリックリンクを作成
     ln -snfv "$dotfiles_gitconfig" "$home_gitconfig"
