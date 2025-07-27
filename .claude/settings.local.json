@@ -14,7 +14,9 @@
       "Bash(zsh:*)",
       "Bash(tmux source-file:*)",
       "Bash(worktree-manager help:*)",
-      "Bash(wt list:*)"
+      "Bash(wt list:*)",
+      "Bash(wt add:*)",
+      "Bash(git check-ignore:*)"
     ],
     "deny": []
   }
