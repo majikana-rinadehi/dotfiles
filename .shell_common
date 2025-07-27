@@ -31,7 +31,7 @@ alias tx='tmux'
 alias tm='time make'
 alias rm='rm -iv'
 
-## git command
+## git commands
 alias g='git'
 alias ga='git add'
 alias gb='git branch'
