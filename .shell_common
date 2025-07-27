@@ -57,7 +57,7 @@ alias gdf="gl | grep -m 2 commit | awk '{print \$NF}' | xargs -t git diff"
 ### only displays file name diff
 alias gdfn="gl | grep -m 2 commit | awk '{print \$NF}' | xargs -t git diff --name-only"
 alias gwt="git worktree"
-alias wt="worktree-manager"
+alias wt="$HOME/bin/worktree-manager"
 ### use ghq and peco to easily move to the repository
 ### https://zenn.dev/devopslead/articles/2defd1ac20bbfe
 alias sd='peco-cd'
