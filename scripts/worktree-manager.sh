@@ -86,7 +86,7 @@ create_worktree() {
     
     # Set default path if not provided
     if [[ -z "$path" ]]; then
-        path="../$(basename "$branch")"
+        path="worktrees/$(basename "$branch")"
     fi
     
     print_status "$BLUE" "worktreeを作成中: ブランチ=$branch, パス=$path"
@@ -220,8 +220,8 @@ resolve_worktree_path() {
     local potential_paths=(
         "$parent_dir/$input"
         "$parent_dir/*$input*"
-        "../$input"
-        "../*$input*"
+        "worktrees/$input"
+        "worktrees/*$input*"
     )
     
     for pattern in "${potential_paths[@]}"; do
