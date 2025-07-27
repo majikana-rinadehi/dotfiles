@@ -44,8 +44,24 @@ check_requirements() {
     fi
     
     if [[ ${#missing_commands[@]} -gt 0 ]]; then
+        print_status "$YELLOW" "Missing required commands: ${missing_commands[*]}"
+        print_status "$BLUE" "Attempting to install missing dependencies automatically..."
+        
+        # Try to use auto-install-deps.sh if available
+        local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+        local auto_install_script="$script_dir/auto-install-deps.sh"
+        
+        if [[ -f "$auto_install_script" ]]; then
+            if bash "$auto_install_script"; then
+                print_status "$GREEN" "Dependencies installed successfully!"
+                return 0
+            else
+                print_status "$RED" "Automatic installation failed."
+            fi
+        fi
+        
         print_status "$RED" "Error: Missing required commands: ${missing_commands[*]}"
-        print_status "$YELLOW" "Please install the missing commands and try again."
+        print_status "$YELLOW" "Please install the missing commands manually and try again."
         return 1
     fi
     
