@@ -52,6 +52,7 @@ git checkout main
 git pull origin main
 
 # ワークツリーを作成（wtコマンドを使用）
+# 作成場所はカレントディレクトリの配下のworktrees/
 wt create feature/issue-番号-概要
 
 # 作成したワークツリーに移動
