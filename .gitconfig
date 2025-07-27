@@ -36,7 +36,7 @@
 
 # Merge settings
 [merge]
-    ff = false
+    ff = true
 
 # Diff settings
 [diff]
