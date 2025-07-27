@@ -12,7 +12,9 @@
       "Bash(zsh:*)",
       "Bash(ls:*)",
       "Bash(zsh:*)",
-      "Bash(tmux source-file:*)"
+      "Bash(tmux source-file:*)",
+      "Bash(worktree-manager help:*)",
+      "Bash(wt list:*)"
     ],
     "deny": []
   }

@@ -6,6 +6,65 @@ function peco-cd () {
   cd "$( ghq list --full-path | peco)"
 }
 
+# git worktree管理機能
+function worktree-manager() {
+  local action=$1
+  
+  case $action in
+    "add"|"a")
+      if [ -z "$2" ]; then
+        echo "使用法: worktree-manager add <branch-name> [path]"
+        return 1
+      fi
+      local branch_name=$2
+      local path=${3:-"../${branch_name}"}
+      git worktree add "$path" "$branch_name"
+      echo "worktree '$path' (branch: $branch_name) を作成しました"
+      ;;
+    "list"|"l")
+      git worktree list
+      ;;
+    "select"|"s")
+      local selected_path=$(git worktree list | grep -v "(bare)" | awk '{print $1}' | peco)
+      if [ -n "$selected_path" ]; then
+        cd "$selected_path"
+        echo "worktree '$selected_path' に移動しました"
+      fi
+      ;;
+    "remove"|"rm")
+      local selected_worktree=$(git worktree list | grep -v "(bare)" | peco)
+      if [ -n "$selected_worktree" ]; then
+        local path=$(echo "$selected_worktree" | awk '{print $1}')
+        local branch=$(echo "$selected_worktree" | awk '{print $3}' | sed 's/\[//g' | sed 's/\]//g')
+        read -p "worktree '$path' (branch: $branch) を削除しますか？ [y/N]: " confirm
+        if [[ $confirm =~ ^[Yy]$ ]]; then
+          git worktree remove "$path"
+          echo "worktree '$path' を削除しました"
+        fi
+      fi
+      ;;
+    "prune"|"p")
+      git worktree prune
+      echo "不要なworktreeエントリを削除しました"
+      ;;
+    "help"|"h"|*)
+      echo "Git Worktree Manager"
+      echo ""
+      echo "使用法: worktree-manager <command> [options]"
+      echo ""
+      echo "コマンド:"
+      echo "  add|a <branch> [path]  新しいworktreeを作成"
+      echo "  list|l                 worktree一覧を表示"
+      echo "  select|s               pecoでworktreeを選択して移動"
+      echo "  remove|rm              pecoでworktreeを選択して削除"
+      echo "  prune|p                不要なworktreeエントリを削除"
+      echo "  help|h                 このヘルプを表示"
+      echo ""
+      echo "エイリアス: wt"
+      ;;
+  esac
+}
+
 # alias
 ## linux commands
 alias ..='cd ../'
