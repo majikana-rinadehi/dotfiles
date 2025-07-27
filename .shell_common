@@ -7,7 +7,6 @@ function peco-cd () {
 }
 
 # alias
-
 ## linux
 alias ..='cd ../'
 alias ...='cd ../../'
