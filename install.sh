@@ -37,15 +37,21 @@ echo "Detected platform: $PLATFORM"
 
 # プラットフォーム固有の初期化処理
 platform_init() {
+    # 必要な依存関係を自動インストール
+    echo "必要な依存関係をチェック・インストールしています..."
+    if [ -f "${DOTFILES_DIR}/scripts/auto-install-deps.sh" ]; then
+        if ! bash "${DOTFILES_DIR}/scripts/auto-install-deps.sh"; then
+            echo "依存関係のインストールに失敗しました。"
+            exit 1
+        fi
+    else
+        echo "警告: 自動インストールスクリプトが見つかりません。"
+        echo "手動で必要なパッケージ（git, curl, zsh）をインストールしてください。"
+    fi
+    
     case "$PLATFORM" in
         macOS)
             echo "macOS環境の初期化を実行..."
-            # Homebrewが未インストールの場合の処理
-            if ! command -v brew &> /dev/null; then
-                echo "Homebrewがインストールされていません。"
-                echo "https://brew.sh を参照してインストールしてください。"
-                exit 1
-            fi
             
             # zinitのインストール（Homebrewを使用）
             if ! command -v zinit &> /dev/null && [ ! -d "$HOME/.local/share/zinit/zinit.git" ]; then
@@ -58,12 +64,6 @@ platform_init() {
             ;;
         ubuntu|linux)
             echo "Linux環境の初期化を実行..."
-            # 必要なパッケージの確認
-            if ! command -v git &> /dev/null; then
-                echo "gitがインストールされていません。"
-                echo "sudo apt update && sudo apt install git を実行してください。"
-                exit 1
-            fi
             
             # zinitのインストール
             if [ ! -d "$HOME/.local/share/zinit/zinit.git" ]; then
