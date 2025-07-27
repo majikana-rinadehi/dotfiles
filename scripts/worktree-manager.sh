@@ -34,7 +34,7 @@ ${SCRIPT_NAME} - Git Worktree管理ツール
     create <branch> [path]    新しいworktreeを作成
     list                      worktreeの一覧を表示
     delete <path>             指定されたworktreeを削除
-    move <path>               指定されたworktreeに移動
+    move <name|path>          指定されたworktree名またはパスに移動
     help                      このヘルプを表示
 
 例:
@@ -42,6 +42,7 @@ ${SCRIPT_NAME} - Git Worktree管理ツール
     ${SCRIPT_NAME} create hotfix/bug-fix ../hotfix-repo
     ${SCRIPT_NAME} list
     ${SCRIPT_NAME} delete ../feature-repo
+    ${SCRIPT_NAME} move feature-branch
     ${SCRIPT_NAME} move ../feature-repo
 
 オプション:
@@ -52,7 +53,8 @@ ${SCRIPT_NAME} - Git Worktree管理ツール
             '../<branch-name>'を使用します。
     list:   現在のworktree一覧を表示します。
     delete: 指定されたパスのworktreeを削除します。
-    move:   指定されたworktreeのディレクトリに移動します。
+    move:   指定されたworktree名またはパスのディレクトリに移動します。
+            ブランチ名で指定した場合、自動的にworktreeのパスを解決します。
 EOF
 }
 
@@ -138,18 +140,96 @@ delete_worktree() {
     fi
 }
 
+# Function to resolve worktree name to path
+resolve_worktree_path() {
+    local input="$1"
+    
+    # If input is already a path (contains / or starts with .), return as is
+    if [[ "$input" == *"/"* ]] || [[ "$input" == "."* ]]; then
+        echo "$input"
+        return 0
+    fi
+    
+    # Try to find worktree by name
+    local worktree_info
+    worktree_info=$(git worktree list --porcelain 2>/dev/null || true)
+    
+    if [[ -n "$worktree_info" ]]; then
+        local current_path=""
+        local current_branch=""
+        
+        while IFS= read -r line; do
+            if [[ "$line" == worktree* ]]; then
+                current_path="${line#worktree }"
+            elif [[ "$line" == branch* ]]; then
+                current_branch="${line#branch refs/heads/}"
+                
+                # Check if branch name matches input
+                if [[ "$current_branch" == "$input" ]]; then
+                    echo "$current_path"
+                    return 0
+                fi
+                
+                # Check if branch basename matches input (e.g., "feature" matches "feature/new-feature")
+                if [[ "$(basename "$current_branch")" == "$input" ]]; then
+                    echo "$current_path"
+                    return 0
+                fi
+            fi
+        done <<< "$worktree_info"
+    fi
+    
+    # If not found as branch name, try as directory name pattern
+    local repo_root
+    repo_root=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+    local parent_dir
+    parent_dir=$(dirname "$repo_root")
+    
+    # Look for directories matching the pattern in parent directory
+    local potential_paths=(
+        "$parent_dir/$input"
+        "$parent_dir/*$input*"
+        "../$input"
+        "../*$input*"
+    )
+    
+    for pattern in "${potential_paths[@]}"; do
+        for path in $pattern; do
+            if [[ -d "$path" ]] && git -C "$path" rev-parse --git-dir >/dev/null 2>&1; then
+                echo "$path"
+                return 0
+            fi
+        done
+    done
+    
+    # Return original input if nothing found
+    echo "$input"
+    return 1
+}
+
 # Function to move to a worktree
 move_to_worktree() {
-    local path="$1"
+    local input="$1"
     
-    if [[ -z "$path" ]]; then
-        print_status "$RED" "エラー: 移動先のworktreeパスが指定されていません"
+    if [[ -z "$input" ]]; then
+        print_status "$RED" "エラー: 移動先のworktree名またはパスが指定されていません"
         return 1
     fi
     
+    # Resolve input to actual path
+    local path
+    path=$(resolve_worktree_path "$input")
+    local resolve_status=$?
+    
     # Check if path exists
     if [[ ! -d "$path" ]]; then
-        print_status "$RED" "エラー: パス '$path' は存在しません"
+        if [[ $resolve_status -eq 1 ]]; then
+            print_status "$RED" "エラー: worktree '$input' が見つかりません"
+            print_status "$YELLOW" "利用可能なworktree一覧:"
+            git worktree list 2>/dev/null || true
+        else
+            print_status "$RED" "エラー: パス '$path' は存在しません"
+        fi
         return 1
     fi
     
@@ -201,7 +281,7 @@ main() {
             ;;
         "move"|"m"|"cd")
             if [[ $# -eq 0 ]]; then
-                print_status "$RED" "エラー: 移動先のworktreeパスが必要です"
+                print_status "$RED" "エラー: 移動先のworktree名またはパスが必要です"
                 show_help
                 exit 1
             fi
