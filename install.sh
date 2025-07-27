@@ -91,7 +91,6 @@ echo "Dotfile set $dotfile"
 handle_gitconfig() {
     local dotfiles_gitconfig="${DOTFILES_DIR}/.gitconfig"
     local home_gitconfig="$HOME/.gitconfig"
-    local backup_gitconfig="$HOME/.gitconfig.backup"
     local gitconfig_local="$HOME/.gitconfig.local"
     
     # dotfilesに.gitconfigが存在しない場合はスキップ
@@ -100,71 +99,23 @@ handle_gitconfig() {
         return
     fi
     
-    # 既存の.gitconfigがある場合の処理
-    if [ -f "$home_gitconfig" ] || [ -L "$home_gitconfig" ]; then
-        echo "既存の .gitconfig を検出しました。"
-        
-        # シンボリックリンクでない場合のみバックアップと設定の抽出を行う
-        if [ ! -L "$home_gitconfig" ]; then
-            # 既存の設定から user.name と user.email を抽出
-            local user_name=$(git config --file "$home_gitconfig" user.name 2>/dev/null || echo "")
-            local user_email=$(git config --file "$home_gitconfig" user.email 2>/dev/null || echo "")
-            
-            # バックアップを作成
-            cp "$home_gitconfig" "$backup_gitconfig"
-            echo "既存の .gitconfig を $backup_gitconfig にバックアップしました。"
-            
-            # 既存の.gitconfigを削除
-            rm -f "$home_gitconfig"
-            
-            # バックアップから.gitconfig.localを作成（まだ存在しない場合）
-            if [ ! -f "$gitconfig_local" ] && [ -f "$backup_gitconfig" ]; then
-                # userセクション、include設定、および.gitconfig.localへの参照を除外
-                grep -v -E "^\[user\]|^\[include\]|name =|email =|path = ~/\.gitconfig\.local" "$backup_gitconfig" > "$gitconfig_local" 2>/dev/null || true
-                echo "既存のカスタム設定を .gitconfig.local に保存しました。"
-            fi
-            
-            # ユーザー固有の設定を.gitconfig.localに保存
-            if [ -n "$user_name" ] || [ -n "$user_email" ]; then
-                # .gitconfig.localが存在しない場合は作成
-                if [ ! -f "$gitconfig_local" ]; then
-                    touch "$gitconfig_local"
-                fi
-                
-                # userセクションが存在しない場合は追加
-                if ! grep -q "^\[user\]" "$gitconfig_local"; then
-                    echo "[user]" >> "$gitconfig_local"
-                fi
-                
-                # user.nameとuser.emailを設定
-                if [ -n "$user_name" ]; then
-                    git config --file "$gitconfig_local" user.name "$user_name"
-                    echo "user.name を .gitconfig.local に保存しました: $user_name"
-                fi
-                
-                if [ -n "$user_email" ]; then
-                    git config --file "$gitconfig_local" user.email "$user_email"
-                    echo "user.email を .gitconfig.local に保存しました: $user_email"
-                fi
-            fi
-        else
-            # 既にシンボリックリンクの場合は削除して再作成
-            rm -f "$home_gitconfig"
-        fi
+    # 既存の.gitconfig.localがある場合は削除
+    if [ -f "$gitconfig_local" ]; then
+        echo "既存の .gitconfig.local を削除します。"
+        rm -f "$gitconfig_local"
     fi
+    
     
     # dotfilesの.gitconfigへのシンボリックリンクを作成
     ln -snfv "$dotfiles_gitconfig" "$home_gitconfig"
     echo "dotfilesの .gitconfig へのシンボリックリンクを作成しました。"
     
-    # .gitconfig.localが存在しない場合、ユーザーに設定を促す
-    if [ ! -f "$gitconfig_local" ] || ! grep -q "name =\|email =" "$gitconfig_local" 2>/dev/null; then
-        echo ""
-        echo "Git のユーザー情報を設定してください:"
-        echo "  git config --file ~/.gitconfig.local user.name \"Your Name\""
-        echo "  git config --file ~/.gitconfig.local user.email \"your.email@example.com\""
-        echo ""
-    fi
+    # ユーザーに設定を促す
+    echo ""
+    echo "Git のユーザー情報を設定してください:"
+    echo "  git config --global user.name \"Your Name\""
+    echo "  git config --global user.email \"your.email@example.com\""
+    echo ""
 }
 
 # .gitconfig の処理を実行
