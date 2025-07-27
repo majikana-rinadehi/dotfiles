@@ -43,6 +43,3 @@
     algorithm = histogram
     indentHeuristic = true
 
-# Include local settings
-[include]
-    path = ~/.gitconfig.local

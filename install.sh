@@ -100,6 +100,12 @@ handle_gitconfig() {
         return
     fi
     
+    # 既存の.gitconfig.localがある場合は削除
+    if [ -f "$gitconfig_local" ]; then
+        echo "既存の .gitconfig.local を削除します。"
+        rm -f "$gitconfig_local"
+    fi
+    
     # 既存の.gitconfigがある場合の処理
     if [ -f "$home_gitconfig" ] || [ -L "$home_gitconfig" ]; then
         echo "既存の .gitconfig を検出しました。"
