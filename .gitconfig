@@ -1,6 +1,6 @@
 # Core settings
 [core]
-    editor = vim
+    editor = vi
     autocrlf = false
     ignorecase = false
     quotepath = false
@@ -32,7 +32,7 @@
 
 # Pull settings
 [pull]
-    rebase = false
+    rebase = true
 
 # Merge settings
 [merge]

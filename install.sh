@@ -56,8 +56,8 @@ platform_init() {
                 echo "zinitは既にインストールされています。"
             fi
             ;;
-        ubuntu)
-            echo "Ubuntu環境の初期化を実行..."
+        ubuntu|linux)
+            echo "Linux環境の初期化を実行..."
             # 必要なパッケージの確認
             if ! command -v git &> /dev/null; then
                 echo "gitがインストールされていません。"
@@ -68,7 +68,7 @@ platform_init() {
             # zinitのインストール
             if [ ! -d "$HOME/.local/share/zinit/zinit.git" ]; then
                 echo "zinitをインストールしています..."
-                bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
+                echo "y" | bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/zdharma-continuum/zinit/HEAD/scripts/install.sh)"
                 echo "zinitのインストールが完了しました。"
             else
                 echo "zinitは既にインストールされています。"
