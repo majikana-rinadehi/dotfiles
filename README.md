@@ -31,7 +31,7 @@ $ make i
 | `.shell_common` | Bash/Zsh共通の設定（エイリアス、環境変数など） |
 | `.vimrc` | Vimの設定ファイル |
 | `.tmux.conf` | tmuxの設定ファイル |
-| `.gitconfig_tmp` | Gitのグローバル設定テンプレート |
+| `.gitconfig` | Gitのグローバル設定（シンボリックリンクで管理） |
 | `.p10k.zsh` | Powerlevel10kテーマの設定 |
 | `.dircolors` | lsコマンドの色設定 |
 
@@ -128,10 +128,27 @@ $ make i
 - シンボリックリンクの削除スクリプト
 - 設定の完全削除オプション
 
+## Git設定の管理
+
+### .gitconfigの仕組み
+- `.gitconfig`はシンボリックリンクとしてdotfilesから管理されます
+- ユーザー固有の設定（user.name、user.emailなど）は`~/.gitconfig.local`に保存されます
+- `.gitconfig`内の`[include]`セクションにより、`.gitconfig.local`が自動的に読み込まれます
+
+### ユーザー設定の方法
+```sh
+# ユーザー名とメールアドレスの設定
+$ git config --file ~/.gitconfig.local user.name "Your Name"
+$ git config --file ~/.gitconfig.local user.email "your.email@example.com"
+
+# その他のローカル設定も同様に追加可能
+$ git config --file ~/.gitconfig.local core.editor "your-favorite-editor"
+```
+
 ## 注意事項
 
 - **秘密情報を含むファイル**（`.aws`、秘密鍵など）は**絶対に**このリポジトリに含めないでください
-- 個人的な設定は`.gitconfig_local`などのローカルファイルで管理することを推奨します
+- 個人的な設定は`.gitconfig.local`などのローカルファイルで管理することを推奨します
 
 ## ライセンス
 
