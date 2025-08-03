@@ -30,9 +30,16 @@ fi
 # Get the dotfiles directory
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-# Copy iTerm2 preferences
-echo "Copying iTerm2 preferences..."
-cp "$DOTFILES_DIR/iterm2/com.googlecode.iterm2.plist" "$ITERM2_PREFS_DIR/"
+# Process and copy iTerm2 preferences
+echo "Processing and copying iTerm2 preferences..."
+if [ -f "$DOTFILES_DIR/scripts/process_iterm2_config.sh" ]; then
+    "$DOTFILES_DIR/scripts/process_iterm2_config.sh" \
+        "$DOTFILES_DIR/iterm2/com.googlecode.iterm2.plist" \
+        "$ITERM2_PREFS_DIR/com.googlecode.iterm2.plist"
+else
+    # フォールバック: 直接コピー
+    cp "$DOTFILES_DIR/iterm2/com.googlecode.iterm2.plist" "$ITERM2_PREFS_DIR/"
+fi
 
 # Set iTerm2 to load preferences from custom folder
 defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true

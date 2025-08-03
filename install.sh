@@ -143,6 +143,35 @@ for dotfile in "${DOTFILES_DIR}"/.??*; do
 
 done
 
+# iTerm2設定ディレクトリの処理
+if [ -d "${DOTFILES_DIR}/iterm2" ]; then
+    echo "iTerm2設定をセットアップしています..."
+    
+    # iTerm2の設定ディレクトリを確保
+    ITERM2_PREFS_DIR="$HOME/Library/Preferences"
+    if [ ! -d "$ITERM2_PREFS_DIR" ]; then
+        mkdir -p "$ITERM2_PREFS_DIR"
+    fi
+    
+    # plistファイルを処理してコピー
+    if [ -f "${DOTFILES_DIR}/iterm2/com.googlecode.iterm2.plist" ]; then
+        if [ -f "${DOTFILES_DIR}/scripts/process_iterm2_config.sh" ]; then
+            "${DOTFILES_DIR}/scripts/process_iterm2_config.sh" \
+                "${DOTFILES_DIR}/iterm2/com.googlecode.iterm2.plist" \
+                "$ITERM2_PREFS_DIR/com.googlecode.iterm2.plist"
+            echo "iTerm2設定ファイルを処理してコピーしました。"
+        else
+            cp "${DOTFILES_DIR}/iterm2/com.googlecode.iterm2.plist" "$ITERM2_PREFS_DIR/"
+            echo "iTerm2設定ファイルをコピーしました。"
+        fi
+        
+        # iTerm2にカスタム設定フォルダを使用するよう指示
+        defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
+        defaults write com.googlecode.iterm2 PrefsCustomFolder -string "${DOTFILES_DIR}/iterm2"
+        echo "iTerm2がカスタム設定フォルダを使用するよう設定しました。"
+    fi
+fi
+
 # scriptsディレクトリ内のシェルスクリプトを$HOME/binにシンボリックリンク作成
 echo "Creating symlinks for scripts in $HOME/bin..."
 
