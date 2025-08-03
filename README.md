@@ -145,6 +145,42 @@ $ git config --file ~/.gitconfig.local user.email "your.email@example.com"
 $ git config --file ~/.gitconfig.local core.editor "your-favorite-editor"
 ```
 
+## iTerm2の設定
+
+### インストール
+```sh
+# Brewfileを使用してiTerm2をインストール
+$ brew bundle
+
+# または個別にインストール
+$ brew install --cask iterm2
+```
+
+### セットアップ
+```sh
+# iTerm2の設定をセットアップ
+$ ./scripts/setup_iterm2.sh
+```
+
+このスクリプトは以下を実行します：
+1. iTerm2のインストール（未インストールの場合）
+2. 推奨設定ファイルの配置
+3. MesloLGS NFフォントのインストール（Powerline対応）
+4. カスタム設定フォルダの指定
+
+### 設定内容
+- **カラースキーム**: ダークテーマ（カスタム）
+- **フォント**: MesloLGS NF 14pt（Powerline対応）
+- **スクロールバック**: 10,000行
+- **ホットキー**: 設定済み
+- **ペイン分割**: ディマー設定
+- **マウスレポート**: 有効
+- **その他**: tmux統合、コマンド履歴、ペースト履歴
+
+### カスタマイズ
+iTerm2の設定は`iterm2/com.googlecode.iterm2.plist`で管理されています。
+設定を変更する場合は、iTerm2の設定画面から変更し、設定ファイルをコミットしてください。
+
 ## 注意事項
 
 - **秘密情報を含むファイル**（`.aws`、秘密鍵など）は**絶対に**このリポジトリに含めないでください
