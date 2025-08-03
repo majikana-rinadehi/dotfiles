@@ -181,6 +181,18 @@ $ ./scripts/setup_iterm2.sh
 iTerm2の設定は`iterm2/com.googlecode.iterm2.plist`で管理されています。
 設定を変更する場合は、iTerm2の設定画面から変更し、設定ファイルをコミットしてください。
 
+### ファイル構成
+| ファイル | 説明 |
+|---------|------|
+| `Brewfile` | iTerm2を含む開発ツールの定義（[Homebrew Bundle](https://github.com/Homebrew/homebrew-bundle)） |
+| `iterm2/com.googlecode.iterm2.plist` | iTerm2の設定ファイル（カラー、フォント、キーバインド等） |
+| `scripts/setup_iterm2.sh` | 自動セットアップスクリプト |
+| `scripts/process_iterm2_config.sh` | 設定ファイルの変数置換処理 |
+
+### 参考リンク
+- [iTerm2公式サイト](https://iterm2.com/)
+- [MesloLGS Nerd Font](https://github.com/ryanoasis/nerd-fonts)
+
 ## 注意事項
 
 - **秘密情報を含むファイル**（`.aws`、秘密鍵など）は**絶対に**このリポジトリに含めないでください
